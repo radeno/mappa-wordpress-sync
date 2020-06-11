@@ -1,0 +1,14 @@
+<wpml-config>
+  <custom-types>
+    <custom-type translate="1">mappa_geo_place</custom-type>
+    <custom-type translate="1">mappa_geo_route</custom-type>
+  </custom-types>
+  <taxonomies>
+    <taxonomy translate="1">mappa_geo_category_group</taxonomy>
+    <taxonomy translate="1">mappa_geo_category</taxonomy>
+  </taxonomies>
+  <custom-fields>
+    <custom-field action="copy">_mappa_id</custom-field>
+    <custom-field action="copy">_mappa_updated_at</custom-field>
+  </custom-fields>
+</wpml-config>

@@ -1,0 +1,16 @@
+{
+    "name": "radeno/mappa-wp-sync",
+    "version": "1.0.0",
+    "type": "wordpress-plugin",
+    "description": "MAPPA sync",
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "@stable",
+        "phpmd/phpmd": "@stable"
+    },
+    "require": {
+        "php": "^7.3"
+    },
+    "autoload": {
+        "psr-4": {}
+    }
+}

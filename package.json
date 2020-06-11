@@ -1,0 +1,9 @@
+{
+  "name": "radeno/mappa-wp-sync",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "@prettier/plugin-php": "^0.14.2",
+    "prettier": "^2.0.5"
+  }
+}
