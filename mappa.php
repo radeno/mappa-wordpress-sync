@@ -43,8 +43,8 @@ function deactivatePlugin()
     \wp_clear_scheduled_hook('mappa_synchronize_data');
 }
 
-\register_activation_hook(__FILE__, 'Mappa\activatePlugin');
-\register_deactivation_hook(__FILE__, 'Mappa\deactivatePlugin');
+// \register_activation_hook(__FILE__, 'Mappa\activatePlugin');
+// \register_deactivation_hook(__FILE__, 'Mappa\deactivatePlugin');
 
 function loadPluginTextdomain()
 {
@@ -56,7 +56,7 @@ function loadPluginTextdomain()
 }
 \add_action('plugins_loaded', 'Mappa\loadPluginTextdomain', 1);
 
-\add_action('mappa_synchronize_data', 'Mappa\runSynchronization');
+// \add_action('mappa_synchronize_data', 'Mappa\runSynchronization');
 
 function runSynchronization()
 {
