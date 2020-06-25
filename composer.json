@@ -1,6 +1,6 @@
 {
     "name": "radeno/mappa-wordpress-sync",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "wordpress-plugin",
     "description": "MAPPA sync",
     "require-dev": {
