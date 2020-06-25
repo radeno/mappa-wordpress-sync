@@ -171,7 +171,6 @@ class MediaDocumentManager
 
         $metaAttrs = [
             '_mappa_id'         => $this->mappaObject['id'],
-            '_mappa_sha512'     => $this->mappaObject['sha512_hex'],
             '_mappa_updated_at' => $this->mappaObject['updated_at']
         ];
 

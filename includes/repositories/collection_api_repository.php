@@ -10,9 +10,16 @@ class CollectionApiRepository extends ApiRepository
     public $metadata = null;
     public $options  = ['updated_from' => null, 'language' => null];
 
-    public function __construct($options = [])
+    public function __construct($options)
     {
-        $this->options = array_merge($this->options, $options);
+        parent::__construct($options);
+    }
+
+    public function callData($repository, $queryParams)
+    {
+        $response       = $this->getResponse($this->getRequestUrl($repository, $queryParams));
+        $this->results  = $response['results'];
+        $this->metadata = $response['metadata'];
     }
 
     public function getMetadata()
@@ -23,12 +30,5 @@ class CollectionApiRepository extends ApiRepository
     public function getResults()
     {
         return $this->results;
-    }
-
-    public function getRequestParams()
-    {
-        return http_build_query([
-            'updated_from' => $this->options['updated_from'],
-        ]);
     }
 }

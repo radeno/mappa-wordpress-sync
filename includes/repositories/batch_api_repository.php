@@ -10,7 +10,12 @@ class BatchApiRepository extends CollectionApiRepository
     {
         parent::__construct($options);
 
-        $response       = $this->getResponse();
+        $this->call('batches.json', $options);
+    }
+
+    public function call($repository, $queryParams)
+    {
+        $response       = $this->getResponse($this->getRequestUrl($repository, $queryParams));
         $this->results  = $response['results'];
         $this->metadata = $response['metadata'];
     }
@@ -43,10 +48,5 @@ class BatchApiRepository extends CollectionApiRepository
     public function getMessageEvents()
     {
         return $this->results['message_events']['results'];
-    }
-
-    public function getRequestUrl()
-    {
-        return MAPPA_API_URL . '/batches.json?' . $this->getRequestParams();
     }
 }

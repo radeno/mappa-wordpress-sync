@@ -22,7 +22,7 @@ class GeoSpatialManager extends PostManager
             $this->mappaObject['category_ids']
         );
 
-        return $termsQuery->terms;
+        return $termsQuery->terms ?? [];
     }
 
     public function findCategoryGroupTerms($categoryTerms): array
@@ -41,7 +41,7 @@ class GeoSpatialManager extends PostManager
 
         $termsQuery = GeoCategoryGroupManager::findByIds($categoryGroupTermIds);
 
-        return $termsQuery->terms;
+        return $termsQuery->terms ?? [];
     }
 
     public function findByData(): \WP_Query

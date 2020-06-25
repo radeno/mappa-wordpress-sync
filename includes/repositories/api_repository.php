@@ -13,7 +13,7 @@ class ApiRepository
         $this->options = array_merge($this->options, $options);
     }
 
-    public function getRequestHeader()
+    public function getRequestHeaders()
     {
         return [
             'http' => [
@@ -26,22 +26,22 @@ class ApiRepository
         ];
     }
 
-    public function getRequestParams()
+    public function getRequestParams($params)
     {
-        throw new \Exception('Implement getRequestParams in child class.');
+        return http_build_query(array_merge($this->options, $params));
     }
 
-    public function getRequestUrl()
+    public function getRequestUrl($path, $params = null)
     {
-        throw new \Exception('Implement getRequestUrl in child class.');
+        return MAPPA_API_URL . '/' . $path . (!is_null($params) ? '?' . $this->getRequestParams($params) : '');
     }
 
-    public function getResponse()
+    public function getResponse($queryPath)
     {
-        $context = stream_context_create($this->getRequestHeader());
+        $context = stream_context_create($this->getRequestHeaders());
 
         // Open the file using the HTTP headers set above
-        $result = file_get_contents($this->getRequestUrl(), false, $context);
+        $result = file_get_contents($queryPath, false, $context);
 
         return json_decode($result, true);
     }

@@ -6,10 +6,12 @@ require_once 'collection_api_repository.php';
 
 class CategoriesApiRepository extends CollectionApiRepository
 {
-    public function getRequestUrl()
+    public static $repository = 'categories.json';
+
+    public function call()
     {
-        return MAPPA_API_URL .
-            '/categories.json?' .
-            $this->getRequestParams();
+        $response       = $this->getResponse($this->getRequestUrl($this->repository, $this->options));
+        $this->results  = $response['results'];
+        $this->metadata = $response['metadata'];
     }
 }
