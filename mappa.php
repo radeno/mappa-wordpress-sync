@@ -11,7 +11,7 @@ namespace Mappa;
  *
  * Plugin Name:       MAPPA Framework
  * Description:       MAPPA Synchronization Tool
- * Version:           1.0.1
+ * Version:           1.0.2
  * Author:            Choco3web
  * Author URI:        choco3web.eu
  * Text Domain:       mappa
@@ -27,6 +27,10 @@ if (!defined('ABSPATH')) {
 require_once 'includes/constants.php';
 require_once 'includes/cpt_tax.php';
 require_once 'includes/repositories/batch_api_repository.php';
+require_once 'includes/repositories/geo_places_api_repository.php';
+require_once 'includes/repositories/geo_routes_api_repository.php';
+require_once 'includes/repositories/categories_api_repository.php';
+require_once 'includes/repositories/category_groups_api_repository.php';
 require_once 'includes/managers/manager_factory.php';
 
 function activatePlugin()
