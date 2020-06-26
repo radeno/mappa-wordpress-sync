@@ -83,7 +83,6 @@ class PostManager
         $postId     = \wp_insert_post($postParams, true);
 
         if (!empty($postParams['meta_input']['gallery_image_ids'])) {
-            var_dump(array_merge($postParams, ['ID' => $postId]));
             foreach ($postParams['meta_input']['gallery_image_ids'] as $attachmentId) {
                 self::updatePostAttributes($attachmentId, ['post_parent' => $postId]);
             }

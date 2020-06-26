@@ -12,15 +12,12 @@ require_once 'media_document_manager.php';
 
 class ManagerFactory
 {
-    public static function processData(array $dataArray, string $type, array $options) : bool
+    public static function processData(array $dataArray, string $type, array $options) : array
     {
         $processed    = 0;
         $nonProcessed = 0;
-        $breakAfter   = isset($options['break_after'])
-            ? $options['break_after']
-            : false;
 
-        foreach ($dataArray as $dataObject) {
+        $processedData = array_map(function($dataObject) use($type, $options, $processed, $nonProcessed) {
             $manager = self::newManager($dataObject, $type, ['language' => $options['language']]);
             $manager->process();
 
@@ -29,18 +26,9 @@ class ManagerFactory
             } else {
                 $nonProcessed += 1;
             }
+        }, $dataArray);
 
-            if ($breakAfter && $processed >= $breakAfter) {
-                break;
-                return false;
-            }
-        }
-
-        if ($processed + $nonProcessed != count($dataArray)) {
-            return false;
-        }
-
-        return true;
+        return $processedData;
     }
 
     public static function newManager($mappaObject, $type, $options)

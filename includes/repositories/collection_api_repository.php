@@ -10,7 +10,7 @@ class CollectionApiRepository extends ApiRepository
     public $metadata = null;
     public $options  = ['updated_from' => null, 'language' => null];
 
-    public function __construct($options)
+    public function __construct($options = [])
     {
         parent::__construct($options);
     }

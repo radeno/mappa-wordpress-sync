@@ -31,6 +31,7 @@ class MediaDocumentManager
         $postsQuery           = $this->findByData();
         $existedPost          = $postsQuery->posts[0] ?? null;
         $isPostExisted        = !is_null($existedPost);
+        $existedPostMeta      = $isPostExisted ? \get_post_meta($existedPost->ID) : null;
         $isMappaObjectDeleted = !is_null($this->mappaObject['deleted_at']);
 
         # create
@@ -41,9 +42,7 @@ class MediaDocumentManager
         # update
         if ($isPostExisted && !$isMappaObjectDeleted) {
             # skip same version
-            $modifiedDate = ManagerHelper::datetimeFromWordpress(
-                $existedPost->post_modified
-            );
+            $modifiedDate = $existedPostMeta['_mappa_updated_at'][0] ?? null;
 
             if ($modifiedDate === $this->mappaObject['updated_at']) {
                 if (!$this->forceUpdate) {
@@ -82,9 +81,10 @@ class MediaDocumentManager
     {
         $this->action = 'create';
 
+        $postParams = $this->postParams();
+
         $url      = MAPPA_URL . urldecode($this->mappaObject['full_file']['path']);
-        $urlInfo  = pathinfo($this->mappaObject['full_file']['path']);
-        $fileName = $urlInfo['basename'];
+        $fileName = $postParams['_filename'];
         $http     = new \WP_Http();
         $response = $http->request($url, ['timeout' => 60]);
         $dirDate  = ManagerHelper::formatDate($this->mappaObject['created_at'], 'Y/m');
@@ -106,13 +106,13 @@ class MediaDocumentManager
         $wpUploadDir = \wp_upload_dir($dirDate);
 
         // Prepare an array of post data for the attachment.
-        $postMeta = array_merge($this->postParams(), [
+        $postMeta = array_merge($postParams, [
             'guid'           => $wpUploadDir['url'] . '/' . $fileName,
             'post_mime_type' => $fileType['type']
         ]);
 
         if (empty($postMeta['post_title'])) {
-            $postMeta['post_title'] = preg_replace("/[\-_]/", " ", $urlInfo['filename']);
+            $postMeta['post_title'] = preg_replace("/[\-_]/", " ", $fileName);
         }
 
         // Insert the attachment.
@@ -157,16 +157,19 @@ class MediaDocumentManager
             $this->mappaObject['updated_at']
         );
 
+        $pathInfo = pathinfo($this->mappaObject['full_file']['path']);
+
         $attrs = [
             'post_date'     => $postCreatedDate,
             'post_date_gmt' => $postCreatedDate,
             'post_title'    => $this->mappaObject['description']['title_translations'][
                     $this->options['language']
-                ] ?? '',
+                ] ?? preg_replace("/[\-_]/", " ", $pathInfo['filename']),
             'post_status'       => 'inherit',
             'post_modified'     => $postModifiedDate,
             'post_modified_gmt' => $postModifiedDate,
-            'post_author'       => $this->options['post_author_id']
+            'post_author'       => $this->options['post_author_id'],
+            '_filename'         => $fileName['basename']
         ];
 
         $metaAttrs = [
