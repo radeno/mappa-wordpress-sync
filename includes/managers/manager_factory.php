@@ -18,7 +18,7 @@ class ManagerFactory
         $nonProcessed = 0;
 
         $processedData = array_map(function($dataObject) use($type, $options, $processed, $nonProcessed) {
-            $manager = self::newManager($dataObject, $type, ['language' => $options['language']]);
+            $manager = self::newManager($dataObject, $type, $options);
             $manager->process();
 
             if (!$manager->isActionSkipped) {
@@ -29,6 +29,14 @@ class ManagerFactory
         }, $dataArray);
 
         return $processedData;
+    }
+
+    public static function processSingleData(array $dataObject, string $type, array $options) : object
+    {
+        $manager = self::newManager($dataObject, $type, $options);
+        $manager->process();
+
+        return $manager;
     }
 
     public static function newManager($mappaObject, $type, $options)
@@ -44,6 +52,10 @@ class ManagerFactory
 
             case MAPPA_GEO_PLACE:
                 return new GeoPlaceManager($mappaObject, $options);
+                break;
+
+            case MAPPA_GEO_ROUTE:
+                return new GeoRouteManager($mappaObject, $options);
                 break;
 
             case MAPPA_MESSAGE_EVENT:

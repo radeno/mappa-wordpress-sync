@@ -11,7 +11,8 @@ class GeoTermManager extends TermManager
     {
         $attrs = [
             'name'     => $this->mappaObject['name_translations'][$this->options['language']],
-            'taxonomy' => $this->taxonomyType
+            'taxonomy' => $this->taxonomyType,
+            'slug'     => ''
         ];
 
         $metaAttrs = [
@@ -20,7 +21,7 @@ class GeoTermManager extends TermManager
         ];
 
         if (!is_null($this->mappaObject['image'])) {
-            $imageManager = new MediaDocumentManager($this->mappaObject['image']);
+            $imageManager = new MediaDocumentManager($this->mappaObject['image'], $this->options);
             $image        = $imageManager->process();
             if (isset($image->ID)) {
                 $metaAttrs['_thumbnail_id'] = $image->ID;

@@ -11,7 +11,7 @@ namespace Mappa;
  *
  * Plugin Name:       MAPPA Framework
  * Description:       MAPPA Synchronization Tool
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            Choco3web
  * Author URI:        choco3web.eu
  * Text Domain:       mappa
@@ -30,7 +30,10 @@ require_once 'includes/repositories/batch_api_repository.php';
 require_once 'includes/repositories/geo_places_api_repository.php';
 require_once 'includes/repositories/geo_routes_api_repository.php';
 require_once 'includes/repositories/categories_api_repository.php';
+require_once 'includes/repositories/message_events_api_repository.php';
 require_once 'includes/repositories/category_groups_api_repository.php';
+require_once 'includes/synchronizers/category_groups_synchronizer.php';
+require_once 'includes/synchronizers/categories_synchronizer.php';
 require_once 'includes/managers/manager_factory.php';
 
 function activatePlugin()
@@ -62,67 +65,75 @@ function loadPluginTextdomain()
 
 // \add_action('mappa_synchronize_data', 'Mappa\runSynchronization');
 
-function runSynchronization()
-{
-    prerunSynchronization();
+// function runSynchronization()
+// {
+//     prerunSynchronization();
 
-    $lastUpdatedAt = \get_option('mappa_batch_updated_at');
+//     $lastUpdatedAt = \get_option('mappa_batch_updated_at');
 
-    $apiResponse = new BatchApiRepository([
-        'updated_from' => $lastUpdatedAt
-    ]);
+//     $apiResponse = new BatchApiRepository([
+//         'updated_from' => $lastUpdatedAt
+//     ]);
 
-    $defaultOptions = ['language' => substr(get_locale(),0, 2), 'post_author_id' => 1];
+//     $defaultOptions = ['language' => substr(get_locale(),0, 2), 'post_author_id' => 1];
 
-    $processCategoryGroup = ManagerFactory::processData(
-        $apiResponse->getGeoCategoryGroups(),
-        MAPPA_GEO_CATEGORY_GROUP,
-        $defaultOptions
-    );
+//     $processCategoryGroup = ManagerFactory::processData(
+//         $apiResponse->getGeoCategoryGroups(),
+//         MAPPA_GEO_CATEGORY_GROUP,
+//         $defaultOptions
+//     );
 
-    $processCategories = ManagerFactory::processData(
-        $apiResponse->getGeoCategories(),
-        MAPPA_GEO_CATEGORY,
-        $defaultOptions
-    );
+//     $processCategories = ManagerFactory::processData(
+//         $apiResponse->getGeoCategories(),
+//         MAPPA_GEO_CATEGORY,
+//         $defaultOptions
+//     );
 
-    $processGeoPlaces = ManagerFactory::processData(
-        $apiResponse->getGeoPlaces(),
-        MAPPA_GEO_PLACE,
-        $defaultOptions
-    );
+//     $processGeoPlaces = ManagerFactory::processData(
+//         $apiResponse->getGeoPlaces(),
+//         MAPPA_GEO_PLACE,
+//         $defaultOptions
+//     );
 
-    if ($processCategories && $processCategoryGroup && $processGeoPlaces) {
-        \update_option(
-            'mappa_batch_updated_at',
-            $apiResponse->getMetadata()['updated_at']
-        );
+//     if ($processCategories && $processCategoryGroup && $processGeoPlaces) {
+//         \update_option(
+//             'mappa_batch_updated_at',
+//             $apiResponse->getMetadata()['updated_at']
+//         );
+//     }
+
+//     afterrunSynchronization();
+// }
+
+function getLanguages() {
+    if (function_exists('pll_languages_list')) {
+        return pll_languages_list();
     }
 
-    afterrunSynchronization();
+    return [substr(get_locale(), 0, 2)];
 }
 
-function prerunSynchronization()
-{
-    ini_set('max_execution_time', 0);
-    ini_set('memory_limit', -1);
-    ignore_user_abort(true);
-    set_time_limit(0);
+function getDefaultLanguage() {
+    if (function_exists('pll_default_language')) {
+        return pll_default_language();
+    }
 
-    \wp_defer_term_counting(true);
-    \wp_defer_comment_counting(true);
+    return substr(get_locale(), 0, 2);
 }
 
-function afterrunSynchronization()
-{
-    \wp_defer_term_counting(false);
-    \wp_defer_comment_counting(false);
+function getCurrentLanguage() {
+    if (function_exists('pll_current_language')) {
+        return pll_current_language();
+    }
+
+    return substr(get_locale(), 0, 2);
 }
 
 function runManually()
 {
     if (isset($_GET['process_data'])) {
-        runSynchronization();
+        CategoryGroupsSynchronizer::call(['language' => substr(get_locale(), 0, 2), 'post_author_id' => 0]);
+        CategoriesSynchronizer::call(['language' => substr(get_locale(), 0, 2), 'post_author_id' => 0]);
         echo 'Synchronized';
     }
 }

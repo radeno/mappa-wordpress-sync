@@ -19,11 +19,12 @@ class MediaDocumentManager
     public $mappaObject;
     public $action;
     public $isActionSkipped = false;
-    public $forceUpdate     = false;
+    public $forceUpdate;
 
-    public function __construct($mappaObject)
+    public function __construct($mappaObject, $options)
     {
         $this->mappaObject = $mappaObject;
+        $this->forceUpdate = $options['force_update'] ?? false;
     }
 
     public function process(): \WP_Post
@@ -169,7 +170,7 @@ class MediaDocumentManager
             'post_modified'     => $postModifiedDate,
             'post_modified_gmt' => $postModifiedDate,
             'post_author'       => $this->options['post_author_id'],
-            '_filename'         => $fileName['basename']
+            '_filename'         => $pathInfo['basename']
         ];
 
         $metaAttrs = [

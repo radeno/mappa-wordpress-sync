@@ -24,4 +24,9 @@ class GeoRoutesApiRepository extends CollectionApiRepository
     {
         return $this->getResponse($this->getRequestUrl("geo/routes/{$id}.json", $this->options));
     }
+
+    public function getMapImageById($id)
+    {
+        return $this->getBinaryResponse($this->getRequestUrl("geo/routes_extras/{$id}/map_image.png", $this->options));
+    }
 }

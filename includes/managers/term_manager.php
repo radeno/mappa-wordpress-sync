@@ -21,13 +21,14 @@ class TermManager
     public $options;
     public $action;
     public $isActionSkipped;
-    public $forceUpdate = false;
+    public $forceUpdate;
 
     public function __construct($mappaObject, $taxonomyType, $options)
     {
         $this->mappaObject  = $mappaObject;
         $this->taxonomyType = $taxonomyType;
         $this->options      = $options;
+        $this->forceUpdate  = $options['force_update'] ?? false;
     }
 
     public function termParams() : ?array
@@ -40,6 +41,7 @@ class TermManager
         $termsQuery           = $this->findByData();
         $existedTerm          = $termsQuery->terms[0] ?? null;
         $isTermExisted        = !is_null($existedTerm);
+        $existedTermMeta      = $isTermExisted ? \get_term_meta($existedTerm->term_id) : null;
         $isMappaObjectDeleted = !is_null($this->mappaObject['deleted_at']);
 
         # create
@@ -49,11 +51,24 @@ class TermManager
 
         # update
         if ($isTermExisted && !$isMappaObjectDeleted) {
+            $modifiedDate = $existedTermMeta['_mappa_updated_at'][0] ?? null;
+
+            if ($modifiedDate === $this->mappaObject['updated_at']) {
+                if (!$this->forceUpdate) {
+                    $this->action          = 'update';
+                    $this->isActionSkipped = true;
+                    return $existedTerm;
+                }
+            }
+
             return $this->updateTerm($existedTerm);
         }
 
         if ($isTermExisted && $isMappaObjectDeleted) {
             return $this->destroyTerm($existedTerm);
+        } else {
+            $this->action          = 'destroy';
+            $this->isActionSkipped = true;
         }
 
         return $existedTerm;
@@ -104,8 +119,7 @@ class TermManager
         $termParams = $this->termParams();
 
         \wp_update_term($term->term_id, $termParams['taxonomy'], [
-            'name' => $termParams['name'],
-            'slug' => ''
+            'name' => $termParams['name']
         ]);
 
         foreach ($termParams['meta_input'] as $key => $value) {

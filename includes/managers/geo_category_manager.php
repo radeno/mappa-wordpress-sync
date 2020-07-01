@@ -16,4 +16,13 @@ class GeoCategoryManager extends GeoTermManager
     {
         return parent::__construct($mappaObject, MAPPA_GEO_CATEGORY, $options);
     }
+
+    public function termParams() : array
+    {
+        $attrs = parent::termParams();
+
+        $attrs['meta_input']['_mappa_category_group_ids'] = $this->mappaObject['category_group_ids'];
+
+        return $attrs;
+    }
 }

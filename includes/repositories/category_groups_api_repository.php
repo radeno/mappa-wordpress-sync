@@ -12,4 +12,9 @@ class CategoryGroupsApiRepository extends CollectionApiRepository
         $this->results  = $response['results'];
         $this->metadata = $response['metadata'];
     }
+
+    public function getById($id)
+    {
+        return $this->getResponse($this->getRequestUrl("category_groups/{$id}.json", $this->options));
+    }
 }

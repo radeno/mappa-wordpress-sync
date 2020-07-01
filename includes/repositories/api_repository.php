@@ -45,4 +45,14 @@ class ApiRepository
 
         return json_decode($result, true);
     }
+
+    public function getBinaryResponse($queryPath)
+    {
+        $context = stream_context_create($this->getRequestHeaders());
+
+        // Open the file using the HTTP headers set above
+        $result = file_get_contents($queryPath, false, $context);
+
+        return $result;
+    }
 }

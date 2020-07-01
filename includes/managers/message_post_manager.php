@@ -76,7 +76,7 @@ class MessagePostManager extends PostManager
             });
 
             foreach ($sortedImages as $dataImage) {
-                $imageManager = new MediaDocumentManager($dataImage);
+                $imageManager = new MediaDocumentManager($dataImage, $this->options);
                 $image        = $imageManager->process();
                 if (!isset($image->ID)) {
                     continue;

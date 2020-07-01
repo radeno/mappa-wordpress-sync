@@ -9,13 +9,14 @@ class PostManager
     public $options;
     public $action;
     public $isActionSkipped = false;
-    public $forceUpdate     = false;
+    public $forceUpdate;
 
     public function __construct($mappaObject, $postType, $options)
     {
         $this->mappaObject = $mappaObject;
         $this->postType    = $postType;
         $this->options     = $options;
+        $this->forceUpdate = $options['force_update'] ?? false;
     }
 
     public function postParams() : ?array
@@ -28,6 +29,7 @@ class PostManager
         $postsQuery           = $this->findByData();
         $existedPost          = $postsQuery->posts[0] ?? null;
         $isPostExisted        = !is_null($existedPost);
+        $existedPostMeta      = $isPostExisted ? \get_post_meta($existedPost->ID) : null;
         $isMappaObjectDeleted = !is_null($this->mappaObject['deleted_at']);
 
         # create
@@ -38,9 +40,7 @@ class PostManager
         # update
         if ($isPostExisted && !$isMappaObjectDeleted) {
             # skip same version
-            $modifiedDate = ManagerHelper::datetimeFromWordpress(
-                $existedPost->post_modified
-            );
+            $modifiedDate = $existedPostMeta['_mappa_updated_at'][0] ?? null;
 
             if ($modifiedDate === $this->mappaObject['updated_at']) {
                 if (!$this->forceUpdate) {

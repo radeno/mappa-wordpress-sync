@@ -4,10 +4,14 @@ namespace Mappa;
 
 class SynchronizerHelper
 {
-    public static function preRunSynchronization()
+    public static function increaseExecutionTime()
     {
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', -1);
+    }
+    public static function preRunSynchronization()
+    {
+        self::increaseExecutionTime();
         ignore_user_abort(true);
         set_time_limit(0);
 

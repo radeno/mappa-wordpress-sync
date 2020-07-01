@@ -68,6 +68,7 @@ class GeoSpatialManager extends PostManager
             'post_date'         => $postCreatedDate,
             'post_date_gmt'     => $postCreatedDate,
             'post_title'        => $this->mappaObject['title_translations'][$this->options['language']],
+            'post_name'         => '',
             'post_status'       => 'publish',
             'post_type'         => $this->postType,
             'post_modified'     => $postModifiedDate,
@@ -110,7 +111,7 @@ class GeoSpatialManager extends PostManager
             });
 
             foreach ($sortedImages as $dataImage) {
-                $imageManager = new MediaDocumentManager($dataImage);
+                $imageManager = new MediaDocumentManager($dataImage, $this->options);
                 $image        = $imageManager->process();
                 if (!isset($image->ID)) {
                     continue;

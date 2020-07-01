@@ -12,4 +12,9 @@ class CategoriesApiRepository extends CollectionApiRepository
         $this->results  = $response['results'];
         $this->metadata = $response['metadata'];
     }
+
+    public function getById($id)
+    {
+        return $this->getResponse($this->getRequestUrl("categories/{$id}.json", $this->options));
+    }
 }
