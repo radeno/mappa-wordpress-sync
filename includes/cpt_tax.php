@@ -70,6 +70,7 @@ function cptTaxInit()
     \register_post_type(
         MAPPA_GEO_PLACE,
         array_merge(
+            $defaultGeoCpt,
             [
                 'labels' => [
                     'name'          => __('Places', 'mappa'),
@@ -79,13 +80,13 @@ function cptTaxInit()
                 'capability_type' => [MAPPA_GEO_PLACE, MAPPA_GEO_PLACE . 's'],
                 'taxonomies'      => [MAPPA_GEO_CATEGORY, MAPPA_GEO_CATEGORY_GROUP]
             ],
-            $defaultGeoCpt
         )
     );
 
     \register_post_type(
         MAPPA_GEO_ROUTE,
         array_merge(
+            $defaultGeoCpt,
             [
                 'labels' => [
                     'name'          => __('Trails', 'mappa'),
@@ -94,23 +95,23 @@ function cptTaxInit()
                 ],
                 'capability_type' => [MAPPA_GEO_ROUTE, MAPPA_GEO_ROUTE . 's'],
                 'taxonomies'      => [MAPPA_GEO_CATEGORY, MAPPA_GEO_CATEGORY_GROUP]
-            ],
-            $defaultGeoCpt
+            ]
         )
     );
 
     \register_post_type(
         MAPPA_MESSAGE_EVENT,
         array_merge(
+            $defaultGeoCpt,
             [
+                'supports' => array_merge($defaultGeoCpt['supports'], ['sticky_posts']),
                 'labels' => [
                     'name'          => __('Events', 'mappa'),
                     'singular_name' => __('Event', 'mappa'),
                     'archives'      => __('Events', 'mappa')
                 ],
                 'capability_type' => [MAPPA_MESSAGE_EVENT, MAPPA_MESSAGE_EVENT . 's'],
-            ],
-            $defaultGeoCpt
+            ]
         )
     );
 }
