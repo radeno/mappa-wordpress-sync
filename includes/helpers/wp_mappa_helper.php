@@ -88,14 +88,14 @@ class WpMappaHelper
 
     public static function fetchAndUpdateCategory(int $termId, array $options) : GeoCategoryManager
     {
-        $mappaId     = \get_post_meta($termId, '_mappa_id', true);
+        $mappaId     = \get_term_meta($termId, '_mappa_id', true);
         $mappaObject = self::getCategoryById($mappaId, ['language' => $options['language']]);
         return self::updateCategory($mappaObject, ['language' => $options['language']]);
     }
 
     public static function fetchAndUpdateCategoryGroup(int $termId, array $options) : GeoCategoryGroupManager
     {
-        $mappaId     = \get_post_meta($termId, '_mappa_id', true);
+        $mappaId     = \get_term_meta($termId, '_mappa_id', true);
         $mappaObject = self::getCategoryGroupById($mappaId, ['language' => $options['language']]);
         return self::updateCategoryGroup($mappaObject, ['language' => $options['language']]);
     }
