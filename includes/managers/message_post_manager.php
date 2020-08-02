@@ -23,17 +23,6 @@ class MessagePostManager extends PostManager
         return null;
     }
 
-    public function findByData(): \WP_Query
-    {
-        return new \WP_Query([
-            'post_type'   => $this->postType,
-            'post_status' => 'any',
-            'meta_query'  => [
-                ['key' => '_mappa_id', 'value' => $this->mappaObject['id']]
-            ]
-        ]);
-    }
-
     public function postParams(): array
     {
         $postCreatedDate = ManagerHelper::datetimeToWordpress(
