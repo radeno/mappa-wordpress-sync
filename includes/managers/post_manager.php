@@ -69,6 +69,7 @@ class PostManager
         return new \WP_Query([
             'post_type'   => $this->postType,
             'post_status' => 'any',
+            'lang'        => $this->options['language'],
             'meta_query'  => [
                 ['key' => '_mappa_id', 'value' => $this->mappaObject['id']]
             ]

@@ -79,6 +79,7 @@ class TermManager
         return new \WP_Term_Query([
             'taxonomy'   => $this->taxonomyType,
             'hide_empty' => false,
+            'lang'        => $this->options['language'],
             'meta_query' => [
                 ['key' => '_mappa_id', 'value' => $this->mappaObject['id']]
             ]
