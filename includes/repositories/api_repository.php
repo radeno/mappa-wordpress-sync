@@ -8,12 +8,12 @@ class ApiRepository
 {
     public $options = [];
 
-    public function __construct($options = [])
+    public function __construct(array $options = [])
     {
         $this->options = array_merge($this->options, $options);
     }
 
-    public function getRequestHeaders()
+    public function getRequestHeaders() : array
     {
         return [
             'http' => [
@@ -26,17 +26,17 @@ class ApiRepository
         ];
     }
 
-    public function getRequestParams($params)
+    public function getRequestParams(array $params) : string
     {
         return http_build_query(array_merge($this->options, $params));
     }
 
-    public function getRequestUrl($path, $params = null)
+    public function getRequestUrl(string $path, ?array $params = null) : string
     {
         return MAPPA_API_URL . '/' . $path . (!is_null($params) ? '?' . $this->getRequestParams($params) : '');
     }
 
-    public function getResponse($queryPath)
+    public function getResponse(string $queryPath) : array
     {
         $context = stream_context_create($this->getRequestHeaders());
 
@@ -46,7 +46,7 @@ class ApiRepository
         return json_decode($result, true);
     }
 
-    public function getBinaryResponse($queryPath)
+    public function getBinaryResponse(string $queryPath)
     {
         $context = stream_context_create($this->getRequestHeaders());
 

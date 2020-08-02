@@ -7,7 +7,7 @@ require_once 'media_document_manager.php';
 
 class TermManager
 {
-    public static function findByTypeAndIds($taxonomyType, $ids): \WP_Term_Query
+    public static function findByTypeAndIds(string $taxonomyType, array $ids): \WP_Term_Query
     {
         return new \WP_Term_Query([
             'taxonomy'   => $taxonomyType,

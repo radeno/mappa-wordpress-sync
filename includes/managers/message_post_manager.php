@@ -8,7 +8,7 @@ require_once __DIR__ . '/../helpers/manager_helper.php';
 
 class MessagePostManager extends PostManager
 {
-    public function __construct($mappaObject, $postType, $options)
+    public function __construct(array $mappaObject, string $postType, array $options)
     {
         return parent::__construct($mappaObject, $postType, $options);
     }

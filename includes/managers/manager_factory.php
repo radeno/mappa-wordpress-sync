@@ -39,7 +39,7 @@ class ManagerFactory
         return $manager;
     }
 
-    public static function newManager($mappaObject, $type, $options)
+    public static function newManager(array $mappaObject, string $type, array $options)
     {
         switch ($type) {
             case MAPPA_GEO_CATEGORY:

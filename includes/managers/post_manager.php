@@ -91,7 +91,7 @@ class PostManager
         return \get_post($postId);
     }
 
-    public function updatePost($post) : \WP_Post
+    public function updatePost(\WP_Post $post) : \WP_Post
     {
         $this->action = 'update';
 
@@ -107,14 +107,14 @@ class PostManager
         return \get_post($postId);
     }
 
-    public function destroyPost($post) : bool
+    public function destroyPost(\WP_Post $post) : bool
     {
         $this->action = 'destroy';
 
         return \wp_delete_post($post->ID);
     }
 
-    public static function updatePostAttributes($postId, $postParams) : int
+    public static function updatePostAttributes(int $postId, array $postParams) : int
     {
         return \wp_update_post(array_merge($postParams, ['ID' => $postId]), true);
     }

@@ -21,7 +21,7 @@ class MediaDocumentManager
     public $isActionSkipped = false;
     public $forceUpdate;
 
-    public function __construct($mappaObject, $options)
+    public function __construct(array $mappaObject, array $options)
     {
         $this->mappaObject = $mappaObject;
         $this->forceUpdate = $options['force_update'] ?? false;
@@ -131,7 +131,7 @@ class MediaDocumentManager
         return \get_post($attachmentId, 'attachment');
     }
 
-    private function updateAttachment($post): \WP_Post
+    private function updateAttachment(\WP_Post $post): \WP_Post
     {
         $this->action = 'update';
 
@@ -142,7 +142,7 @@ class MediaDocumentManager
         return \get_post($postId);
     }
 
-    private function destroyAttachment($post): \WP_Post
+    private function destroyAttachment(\WP_Post $post): \WP_Post
     {
         $this->action = 'destroy';
 

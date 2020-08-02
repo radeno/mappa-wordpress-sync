@@ -7,7 +7,7 @@ require_once __DIR__ . '/../managers/manager_factory.php';
 require_once __DIR__ . '/../repositories/category_groups_api_repository.php';
 
 class CategoryGroupsSynchronizer {
-    public static function call($options)
+    public static function call(array $options) : array
     {
         SynchronizerHelper::preRunSynchronization();
 

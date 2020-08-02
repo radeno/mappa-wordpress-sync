@@ -11,7 +11,7 @@ require_once __DIR__ . '/../helpers/manager_helper.php';
 
 class GeoSpatialManager extends PostManager
 {
-    public function __construct($mappaObject, $postType, $options)
+    public function __construct(array $mappaObject, string $postType, array $options)
     {
         return parent::__construct($mappaObject, $postType, $options);
     }
@@ -25,7 +25,7 @@ class GeoSpatialManager extends PostManager
         return $termsQuery->terms ?? [];
     }
 
-    public function findCategoryGroupTerms($categoryTerms): array
+    public function findCategoryGroupTerms(array $categoryTermsIds): array
     {
         $categoryGroupTermIds = array_unique(
             array_flatten(
@@ -35,7 +35,7 @@ class GeoSpatialManager extends PostManager
                         '_mappa_category_group_ids',
                         true
                     );
-                }, $categoryTerms)
+                }, $categoryTermsIds)
             )
         );
 

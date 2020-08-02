@@ -12,7 +12,7 @@ class GeoCategoryManager extends GeoTermManager
         return parent::findByTypeAndIds(MAPPA_GEO_CATEGORY, $ids);
     }
 
-    public function __construct($mappaObject, $options)
+    public function __construct(array $mappaObject, array $options)
     {
         return parent::__construct($mappaObject, MAPPA_GEO_CATEGORY, $options);
     }

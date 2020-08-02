@@ -7,7 +7,7 @@ require_once 'message_post_manager.php';
 
 class MessageEventManager extends MessagePostManager
 {
-    public function __construct($mappaObject, $options)
+    public function __construct(array $mappaObject, array $options)
     {
         return parent::__construct($mappaObject, MAPPA_MESSAGE_EVENT, $options);
     }
