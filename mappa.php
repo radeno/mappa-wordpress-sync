@@ -35,6 +35,7 @@ require_once 'includes/repositories/category_groups_api_repository.php';
 require_once 'includes/synchronizers/category_groups_synchronizer.php';
 require_once 'includes/synchronizers/categories_synchronizer.php';
 require_once 'includes/managers/manager_factory.php';
+require_once 'includes/helpers/wp_mappa_helper.php';
 
 function activatePlugin()
 {
