@@ -11,7 +11,7 @@ namespace Mappa;
  *
  * Plugin Name:       MAPPA Framework
  * Description:       MAPPA Synchronization Tool
- * Version:           1.0.7
+ * Version:           1.0.8
  * Author:            Choco3web
  * Author URI:        choco3web.eu
  * Text Domain:       mappa
