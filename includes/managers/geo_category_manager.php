@@ -7,9 +7,9 @@ require_once 'geo_term_manager.php';
 
 class GeoCategoryManager extends GeoTermManager
 {
-    public static function findByIds(array $ids): \WP_Term_Query
+    public static function findByIds(array $ids, string $language): \WP_Term_Query
     {
-        return parent::findByTypeAndIds(MAPPA_GEO_CATEGORY, $ids);
+        return parent::findByTypeAndIds(MAPPA_GEO_CATEGORY, $ids, $language);
     }
 
     public function __construct(array $mappaObject, array $options)

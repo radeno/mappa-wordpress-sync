@@ -13,10 +13,11 @@ class PostManager
 
     public function __construct($mappaObject, $postType, $options)
     {
-        $this->mappaObject = $mappaObject;
-        $this->postType    = $postType;
-        $this->options     = $options;
-        $this->forceUpdate = $options['force_update'] ?? false;
+        $this->mappaObject   = $mappaObject;
+        $this->postType      = $postType;
+        $this->options       = $options;
+        $this->forceUpdate   = $options['force_update'] ?? false;
+        $this->forceObjectId = $options['force_object_id'] ?: null;
     }
 
     public function postParams() : ?array
@@ -24,7 +25,7 @@ class PostManager
         throw new Exception('Implement postParams in child class.');
     }
 
-    public function process() : \WP_Post
+    public function process(?int $postId = null) : \WP_Post
     {
         $postsQuery           = $this->findByData();
         $existedPost          = $postsQuery->posts[0] ?? null;
@@ -66,14 +67,27 @@ class PostManager
 
     public function findByData() : \WP_Query
     {
-        return new \WP_Query([
-            'post_type'   => $this->postType,
-            'post_status' => 'any',
-            'lang'        => $this->options['language'],
-            'meta_query'  => [
-                ['key' => '_mappa_id', 'value' => $this->mappaObject['id']]
-            ]
-        ]);
+        $defaultQuery = [
+            'ignore_sticky_posts' => true,
+            'post_type'           => $this->postType,
+            'post_status'         => 'any',
+        ];
+
+        if ($this->forceObjectId) {
+            return new \WP_Query(array_merge($defaultQuery, ['p' => $this->forceObjectId]));
+        }
+
+        return new \WP_Query(
+            array_merge(
+                $defaultQuery,
+                [
+                    'lang'       => $this->options['language'],
+                    'meta_query' => [
+                        ['key' => '_mappa_id', 'value' => $this->mappaObject['id']]
+                    ]
+                ]
+            )
+        );
     }
 
     public function createPost() : \WP_Post

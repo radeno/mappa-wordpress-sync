@@ -7,11 +7,12 @@ require_once __DIR__ . '/../helpers/manager_helper.php';
 
 class MediaDocumentManager
 {
-    public static function findByIds(array $ids): \WP_Term_Query
+    public static function findByIds(array $ids, $language): \WP_Term_Query
     {
         return new \WP_Term_Query([
             'post_type'   => 'attachment',
             'post_status' => 'any',
+            'lang'        => $language,
             'meta_query'  => [['key' => '_mappa_id', 'value' => $ids]]
         ]);
     }

@@ -19,7 +19,8 @@ class GeoSpatialManager extends PostManager
     public function findCategoryTerms(): array
     {
         $termsQuery = GeoCategoryManager::findByIds(
-            $this->mappaObject['category_ids']
+            $this->mappaObject['category_ids'],
+            $this->options['language']
         );
 
         return $termsQuery->terms ?? [];
@@ -39,7 +40,7 @@ class GeoSpatialManager extends PostManager
             )
         );
 
-        $termsQuery = GeoCategoryGroupManager::findByIds($categoryGroupTermIds);
+        $termsQuery = GeoCategoryGroupManager::findByIds($categoryGroupTermIds, $this->options['language']);
 
         return $termsQuery->terms ?? [];
     }

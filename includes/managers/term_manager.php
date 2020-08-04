@@ -7,10 +7,11 @@ require_once 'media_document_manager.php';
 
 class TermManager
 {
-    public static function findByTypeAndIds(string $taxonomyType, array $ids): \WP_Term_Query
+    public static function findByTypeAndIds(string $taxonomyType, array $ids, string $language): \WP_Term_Query
     {
         return new \WP_Term_Query([
             'taxonomy'   => $taxonomyType,
+            'lang'       => $language,
             'hide_empty' => false,
             'meta_query' => [['key' => '_mappa_id', 'value' => $ids]]
         ]);
@@ -22,13 +23,15 @@ class TermManager
     public $action;
     public $isActionSkipped;
     public $forceUpdate;
+    public $forceObjectId;
 
     public function __construct($mappaObject, $taxonomyType, $options)
     {
-        $this->mappaObject  = $mappaObject;
-        $this->taxonomyType = $taxonomyType;
-        $this->options      = $options;
-        $this->forceUpdate  = $options['force_update'] ?? false;
+        $this->mappaObject   = $mappaObject;
+        $this->taxonomyType  = $taxonomyType;
+        $this->options       = $options;
+        $this->forceUpdate   = $options['force_update'] ?? false;
+        $this->forceObjectId = $options['force_object_id'] ?: null;
     }
 
     public function termParams() : ?array
@@ -76,14 +79,24 @@ class TermManager
 
     public function findByData() : \WP_Term_Query
     {
-        return new \WP_Term_Query([
+        $defaultQuery = [
             'taxonomy'   => $this->taxonomyType,
             'hide_empty' => false,
-            'lang'        => $this->options['language'],
-            'meta_query' => [
-                ['key' => '_mappa_id', 'value' => $this->mappaObject['id']]
+        ];
+
+        if ($this->forceObjectId) {
+            return new \WP_Term_Query(array_merge($defaultQuery, ['include' => [$this->forceObjectId]]));
+        }
+
+        return new \WP_Term_Query(array_merge(
+            $defaultQuery,
+            [
+                'lang'       => $this->options['language'],
+                'meta_query' => [
+                    ['key' => '_mappa_id', 'value' => $this->mappaObject['id']]
+                ]
             ]
-        ]);
+        ));
     }
 
     private function getTermById(int $id) : \WP_Term
