@@ -25,7 +25,7 @@ class PostManager
         throw new Exception('Implement postParams in child class.');
     }
 
-    public function process(?int $postId = null) : \WP_Post
+    public function process() : \WP_Post
     {
         $postsQuery           = $this->findByData();
         $existedPost          = $postsQuery->posts[0] ?? null;
