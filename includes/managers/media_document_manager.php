@@ -162,14 +162,10 @@ class MediaDocumentManager
         $pathInfo = pathinfo($this->mappaObject['full_file']['path']);
 
         $attrs = [
-            'post_date'     => $postCreatedDate,
-            'post_date_gmt' => $postCreatedDate,
             'post_title'    => $this->mappaObject['description']['title_translations'][
                     $this->options['language']
                 ] ?? preg_replace("/[\-_]/", " ", $pathInfo['filename']),
             'post_status'       => 'inherit',
-            'post_modified'     => $postModifiedDate,
-            'post_modified_gmt' => $postModifiedDate,
             'post_author'       => $this->options['post_author_id'],
             '_filename'         => $pathInfo['basename']
         ];

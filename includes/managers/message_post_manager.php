@@ -33,15 +33,11 @@ class MessagePostManager extends PostManager
         );
 
         $attrs = [
-            'post_date'     => $postCreatedDate,
-            'post_date_gmt' => $postCreatedDate,
             'post_title'    => $this->mappaObject['title_translations'][
                     $this->options['language']
                 ],
             'post_status'       => 'publish',
             'post_type'         => $this->postType,
-            'post_modified'     => $postModifiedDate,
-            'post_modified_gmt' => $postModifiedDate,
             'post_author'       => $this->options['post_author_id'],
             'post_content'      => $this->mappaObject['description']['content_translations'][
                     $this->options['language']
