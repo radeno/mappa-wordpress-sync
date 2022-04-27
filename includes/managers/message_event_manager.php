@@ -17,7 +17,9 @@ class MessageEventManager extends MessagePostManager
         $params = parent::postParams();
 
         $params['meta_input']['start_date'] = $this->mappaObject['operation_times'][0]['start_date'];
-        $params['meta_input']['end_date'] = $this->mappaObject['operation_times'][0]['end_date'];
+        $params['meta_input']['end_date']   = $this->mappaObject['operation_times'][0]['end_date'];
+        $params['meta_input']['start_time'] = $this->mappaObject['operation_times'][0]['start_time'];
+        $params['meta_input']['end_time']   = $this->mappaObject['operation_times'][0]['end_time'];
 
         return $params;
     }
